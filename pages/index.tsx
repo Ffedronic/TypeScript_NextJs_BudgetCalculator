@@ -1,17 +1,35 @@
 import type { NextPage } from "next";
-import { Fragment, useState } from "react";
+import { ChangeEvent, EventHandler, FormEvent, Fragment } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 
 import Alert from "../components/Alert";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
-import {
-  getExpenses,
-  reduceExpensesAmounts,
-} from "../data/data";
+import { Expense, reduceExpensesAmounts } from "../data/data";
 
 const Home: NextPage = () => {
-  const initialExpenses = getExpenses();
+  const initialExpenses: Expense[] = [
+    { id: uuidv4(), charge: "rent", amount: 1600 },
+    { id: uuidv4(), charge: "car payment", amount: 1500 },
+    { id: uuidv4(), charge: "credit card bills", amount: 1400 },
+  ];
+
   const [expenses, setExpenses] = useState(initialExpenses);
+  const [charge, setCharge] = useState("");
+  const [amount, setAmount] = useState("");
+
+  function handleCharge(event: ChangeEvent<HTMLInputElement>) {
+    setCharge(event.target.value);
+  }
+
+  function handleAmount(event: ChangeEvent<HTMLInputElement>) {
+    setAmount(event.target.value);
+  }
+
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+  }
   const totalAmounts = reduceExpensesAmounts(expenses);
 
   return (
@@ -19,7 +37,13 @@ const Home: NextPage = () => {
       <Alert />
       <h1>Budget Calculator</h1>
       <main className="App">
-        <ExpenseForm />
+        <ExpenseForm
+          charge={charge}
+          amount={amount}
+          handleCharge={handleCharge}
+          handleAmount={handleAmount}
+          handleSubmit={handleSubmit}
+        />
         <ExpenseList expenses={expenses} />
       </main>
       <footer>

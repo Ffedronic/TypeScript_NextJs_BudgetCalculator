@@ -1,8 +1,18 @@
+import { ChangeEventHandler, FormEventHandler } from "react";
 import { MdSend } from "react-icons/md";
 
-function ExpenseForm() {
+interface ExpenseFormProps {
+  charge: string;
+  amount: string;
+  handleCharge: ChangeEventHandler;
+  handleAmount: ChangeEventHandler;
+  handleSubmit: FormEventHandler
+}
+function ExpenseForm(props: ExpenseFormProps) {
+  const { charge, amount, handleAmount, handleCharge, handleSubmit } = props;
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="form-center">
         <div className="form-group">
           <label htmlFor="charge">Charge</label>
@@ -12,6 +22,8 @@ function ExpenseForm() {
             id="charge"
             name="charge"
             placeholder="e.g. rent"
+            value={charge}
+            onChange={handleCharge}
             required
           />
         </div>
@@ -23,6 +35,8 @@ function ExpenseForm() {
             id="amount"
             name="amount"
             placeholder="e.g. 100"
+            value={amount}
+            onChange={handleAmount}
             required
           />
         </div>
