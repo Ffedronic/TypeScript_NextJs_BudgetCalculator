@@ -19,14 +19,18 @@ export const initialExpenses: Expense[] = [
 export function getExpenses() {
   return initialExpenses;
 }
+
 export function reduceExpensesAmounts(expenses: Expense[]) {
   const expensesAmounts: number[] = [];
+  
   let totalAmounts: number = 0;
+  
   for (let expense of expenses) {
     expensesAmounts.push(expense.amount);
     totalAmounts = expensesAmounts.reduce((a, b) => {
       return a + b;
     });
   }
+
   return totalAmounts;
 }
